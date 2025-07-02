@@ -2,21 +2,19 @@ const express = require('express');
 const router = express.Router();
 const livreController = require('../controllers/livreController');
 
-// ✅ Import des middlewares auth
+//  Import des middlewares d'authentification
 const { verifyToken, isAdmin } = require('../middleware/auth');
 
-// 📚 Routes pour les livres
-
-// Tout le monde peut voir la liste
+//  Liste des livres (tout le monde peut voir)
 router.get('/', livreController.getLivres);
 
-// Seul admin connecté peut ajouter
+//  Ajouter un livre (admin seulement)
 router.post('/', verifyToken, isAdmin, livreController.ajouterLivre);
 
-// Seul admin connecté peut modifier
+//  Modifier un livre (admin seulement)
 router.put('/:id', verifyToken, isAdmin, livreController.modifierLivre);
 
-// Seul admin connecté peut supprimer
+//  Supprimer un livre (admin seulement)
 router.delete('/:id', verifyToken, isAdmin, livreController.supprimerLivre);
 
 module.exports = router;
