@@ -3,16 +3,26 @@ const db = require("../config/db");
 
 // Ajouter un commentaire
 exports.ajouterCommentaire = (req, res) => {
-  const { utilisateur_id, livre_id, note, comment } = req.body;
+  const { livre_id, commentaire, note } = req.body;
+  const utilisateur_id = req.user.id;
 
-  if (!user_id || !livre_id || !note || !comment) {
+  if (!utilisateur_id || !livre_id || !commentaire) {
     return res.status(400).json({ message: "Champs manquants." });
   }
 
-  const sql = "INSERT INTO commentaires (utilisateur_id, livre_id, note, comment) VALUES (?, ?, ?, ?)";
-  db.query(sql, [utilisateur_id, livre_id, note, comment], (err, result) => {
-    if (err) return res.status(500).json({ message: "Erreur serveur.", error: err });
-    res.status(201).json({ message: " Commentaire ajouté !" });
+  const sql = note
+    ? "INSERT INTO commentaires (utilisateur_id, livre_id, note, commentaire) VALUES (?, ?, ?, ?)"
+    : "INSERT INTO commentaires (utilisateur_id, livre_id, commentaire) VALUES (?, ?, ?)";
+  const params = note
+    ? [utilisateur_id, livre_id, note, commentaire]
+    : [utilisateur_id, livre_id, commentaire];
+
+  db.query(sql, params, (err, result) => {
+    if (err) {
+      console.error('Erreur SQL lors de l\'ajout de commentaire :', err);
+      return res.status(500).json({ message: "Erreur serveur.", error: err });
+    }
+    res.status(201).json({ message: "Commentaire ajouté !" });
   });
 };
 
@@ -25,7 +35,7 @@ exports.getCommentaires = (req, res) => {
     FROM commentaires c
     JOIN utilisateurs u ON c.utilisateur_id = u.id
     WHERE c.livre_id = ?
-    ORDER BY c.crée_le DESC
+    ORDER BY c.id DESC
   `;
 
   db.query(sql, [livre_id], (err, result) => {

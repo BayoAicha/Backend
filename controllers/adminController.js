@@ -9,12 +9,12 @@ exports.getAllUsers = (req, res) => {
   });
 };
 
-//  Tous les emprunts avec jointure livres + users
+//  Tous les emprunts avec jointure livres + utilisateurs
 exports.getAllEmprunts = (req, res) => {
   const sql = `
-    SELECT e.id, u.nom AS utilisateurr, u.email, l.titre, l.auteur, e.date_emprunt, e.date_retour, e.retour
+    SELECT e.id, u.nom AS utilisateur, u.email, l.titre, l.auteur, e.date_emprunt, e.date_retour, e.retour
     FROM emprunts e
-    JOIN users u ON e.user_id = u.id
+    JOIN utilisateurs u ON e.utilisateur_id = u.id
     JOIN livres l ON e.livre_id = l.id
     ORDER BY e.date_emprunt DESC
   `;
