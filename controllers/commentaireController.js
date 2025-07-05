@@ -1,7 +1,7 @@
 // controllers/commentaireController.js
 const db = require("../config/db");
 
-// Ajouter un commentaire
+// Ajout d'un commentaire
 exports.ajouterCommentaire = (req, res) => {
   const { livre_id, commentaire, note } = req.body;
   const utilisateur_id = req.user.id;
@@ -26,7 +26,7 @@ exports.ajouterCommentaire = (req, res) => {
   });
 };
 
-// Récupérer les commentaires d'un livre
+// Récupération des commentaires d'un livre
 exports.getCommentaires = (req, res) => {
   const { livre_id } = req.params;
 

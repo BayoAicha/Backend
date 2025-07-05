@@ -1,6 +1,6 @@
 const db = require('../config/db');
 
-// Liste des livres (filtrage combiné)
+// Liste des livres avec filtrage combiné
 exports.getLivres = (req, res) => {
   const { titre, auteur, genre } = req.query;
 
@@ -29,11 +29,11 @@ exports.getLivres = (req, res) => {
   });
 };
 
-//  Fournir genres et auteurs uniques pour remplir les listes déroulantes, dépendant des filtres
+//   genres et auteurs uniques pour remplir les listes déroulantes, dépendant des filtres
 exports.getFiltres = (req, res) => {
   const { titre, auteur, genre } = req.query;
 
-  // préparer les requêtes pour genres et auteurs avec les mêmes filtres
+  // préparation les requêtes pour genres et auteurs avec les mêmes filtres
   let sqlGenres = "SELECT DISTINCT genre FROM livres WHERE 1=1";
   let sqlAuteurs = "SELECT DISTINCT auteur FROM livres WHERE 1=1";
   const paramsGenres = [];
@@ -74,7 +74,7 @@ exports.getFiltres = (req, res) => {
   });
 };
 
-// Ajouter un livre
+// Ajout d'un livre
 exports.ajouterLivre = (req, res) => {
   const { titre, auteur, genre } = req.body;
 
@@ -107,7 +107,7 @@ exports.modifierLivre = (req, res) => {
   });
 };
 
-// Supprimer un livre
+// Suppression d'un livre
 exports.supprimerLivre = (req, res) => {
   const { id } = req.params;
 

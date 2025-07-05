@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+
 exports.verifyToken = (req, res, next) => {
   const bearerHeader = req.headers['authorization'];
 
@@ -9,7 +10,7 @@ exports.verifyToken = (req, res, next) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, authData) => {
       if (err) {
         console.error('Erreur JWT:', err);
-        return res.status(403).json({ message: 'Token invalide ou expiré', error: err.message });
+        return res.status(403).json({ message: 'Token invalide ou expiré,déconnectez-vous puis réconnectez-vous', error: err.message });
       }
       req.user = authData;
       next();

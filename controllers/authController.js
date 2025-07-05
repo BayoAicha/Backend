@@ -10,7 +10,7 @@ exports.register = async (req, res) => {
     return res.status(400).json({ message: "Champs manquants" });
   }
 
-  // Vérifie si l'utilisateur existe déjà
+  // Vérification si l'utilisateur existe déjà
   const sqlCheck = "SELECT * FROM utilisateurs WHERE email = ?";
   db.query(sqlCheck, [email], async (err, results) => {
     if (err) return res.status(500).json(err);
@@ -26,7 +26,7 @@ exports.register = async (req, res) => {
     db.query(sqlInsert, [nom, email, hashedPassword], (err, result) => {
       if (err) return res.status(500).json(err);
 
-      res.status(201).json({ message: "Utilisateur créé ✅" });
+      res.status(201).json({ message: "Utilisateur créé " });
     });
   });
 };
@@ -45,7 +45,7 @@ exports.login = (req, res) => {
 
     const user = results[0];
 
-    // Vérifie que le mot de passe existe dans la BDD
+    // Vérification du mot de passe dans la BDD
     if (!user.mot_de_passe) {
       return res.status(500).json({ message: "Erreur interne : mot de passe manquant." });
     }
@@ -68,5 +68,15 @@ exports.login = (req, res) => {
     );
 
     res.json({ token });
+  });
+};
+
+// Récupéreration des notifications d'un utilisateur
+exports.getNotifications = (req, res) => {
+  const utilisateur_id = req.user.id;
+  const sql = "SELECT * FROM notifications WHERE utilisateur_id = ? ORDER BY date_envoi DESC";
+  db.query(sql, [utilisateur_id], (err, rows) => {
+    if (err) return res.status(500).json({ message: "Erreur serveur", error: err });
+    res.json(rows);
   });
 };

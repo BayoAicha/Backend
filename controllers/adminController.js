@@ -2,7 +2,7 @@ const db = require("../config/db");
 
 //  Tous les utilisateurs
 exports.getAllUsers = (req, res) => {
-  const sql = "SELECT id, nom, email, role, crée_le FROM utilisateurs";
+  const sql = "SELECT id, nom, email, role, cree_le FROM utilisateurs";
   db.query(sql, (err, results) => {
     if (err) return res.status(500).json(err);
     res.json(results);
